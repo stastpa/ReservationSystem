@@ -236,7 +236,7 @@
 
         const { pc, from, date } = selectedReservation;
 
-        fetch('http://localhost:3000/update-reservation', {
+        fetch('https://reservationsystem-pxrs.onrender.com/update-reservation', {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -263,7 +263,7 @@
 
 
       async function loadReservations() {
-        const res = await fetch('http://localhost:3000/reservations', { credentials: 'include' });
+        const res = await fetch('https://reservationsystem-pxrs.onrender.com/reservations', { credentials: 'include' });
         reservations = await res.json();
         updateCalendar();
         updateMap();
@@ -307,7 +307,7 @@
 
 
       async function saveReservations(pc, from, to, date, color = '#1a73e8') {
-        const res = await fetch('http://localhost:3000/reserve', {
+        const res = await fetch('https://reservationsystem-pxrs.onrender.com/reserve', {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -325,10 +325,10 @@
 
 
       function loginWithDiscord() {
-        window.location.href = 'http://localhost:3000/login';
+        window.location.href = 'https://reservationsystem-pxrs.onrender.com/login';
       }
       function logout() {
-        fetch('http://localhost:3000/logout', {
+        fetch('https://reservationsystem-pxrs.onrender.com/logout', {
           method: 'POST',
           credentials: 'include'
         }).then(() => {
@@ -408,7 +408,7 @@
 
       async function loadReservations() {
         try {
-          const res = await fetch('http://localhost:3000/reservations', {
+          const res = await fetch('https://reservationsystem-pxrs.onrender.com/reservations', {
             credentials: 'include'
           });
           if (!res.ok) throw new Error("Failed to load reservations");
@@ -423,7 +423,7 @@
 
       async function fetchUser() {
         try {
-          const res = await fetch('http://localhost:3000/me', {
+          const res = await fetch('https://reservationsystem-pxrs.onrender.com/me', {
             credentials: 'include'
           });
           if (!res.ok) throw new Error("Not logged in");
