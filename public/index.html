@@ -520,7 +520,7 @@
               document.getElementById('colorPicker').value = e.color || '#1a73e8';
               document.getElementById('modalPC').innerText = `Upravit rezervaci PC ${pc}`;
 
-              const canDelete = currentUser && (e.user === currentUser.username || currentUser.roles?.includes('ADMIN_ROLE_ID'));
+              const canDelete = currentUser && (e.user === currentUser.username || currentUser.roles?.includes(ADMIN_ROLE_ID));
               document.getElementById('deleteBtn').style.display = canDelete ? 'inline-block' : 'none';
 
               document.getElementById('overlay').style.display = 'block';
