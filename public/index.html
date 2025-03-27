@@ -430,6 +430,7 @@
 
           const user = await res.json();
           currentUser = user;
+          ADMIN_ROLE_ID = user.adminRoleId;
 
           document.getElementById('userInfo').innerText = `Přihlášen: ${user.username}`;
           document.getElementById('loginScreen').style.display = 'none';
