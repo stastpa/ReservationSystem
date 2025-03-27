@@ -90,9 +90,13 @@ app.get('/callback', async (req, res) => {
 });
 
 app.get('/me', (req, res) => {
+
   req.session.user
-    ? res.json(req.session.user)
+
+    ? res.json({ ...req.session.user, adminRoleId: ADMIN_ROLE_ID })
+
     : res.status(401).json({ error: 'Not logged in' });
+
 });
 
 app.get('/reservations', (req, res) => res.json(reservations));
