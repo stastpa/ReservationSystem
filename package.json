@@ -14,7 +14,7 @@
     "express",
     "pc"
   ],
-  "author": "Patrik Šastnı",
+  "author": "Patrik Stastny",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.3.0",
