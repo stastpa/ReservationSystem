@@ -158,6 +158,7 @@
 
   <div id="app" class="hidden">
     <div class="top-bar">
+      <button onclick="showRules()">Pravidla BK1</button>
       <button onclick="toggleView()">Přepnout zobrazení</button>
       <button onclick="prevDay()">Předchozí den</button>
       <button onclick="nextDay()">Další den</button>
@@ -216,16 +217,75 @@
       <label>Od: <input type="time" id="startTime"></label><br>
       <label>Do: <input type="time" id="endTime"></label><br><br>
       <label>Barva: <input type="color" id="colorPicker" value="#1a73e8"></label><br><br>
+      <label>Popis: <br><textarea id="descriptionInput" rows="3" style="width:100%"></textarea></label><br><br>
       <button onclick="makeReservation()">Rezervovat</button>
       <button onclick="deleteReservation()" id="deleteBtn">Smazat</button>
       <button onclick="closeModal()">Zrušit</button>
     </div>
+
+    <div id="rulesModal" style="display: none; position: fixed; z-index: 1000; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                             background: white; border: 1px solid black; padding: 20px; max-width: 800px; max-height: 90vh;
+                             overflow-y: auto;">
+      <h2>Pravidla a informace o místnosti BK1</h2>
+      <pre style="white-space: pre-wrap;">
+<b>🟡 Pravidlo 1 – Kdo může navštěvovat místnost?</b>
+Tuto místnost/kancelář smí navštěvovat pouze:
+• Členi MIGHTY EAGLES
+• Zaměstnanci školy
+• PVS Ústavu znalectví a oceňování (ÚZO)
+
+<b>🟡 Pravidlo 2 – Co mě zde čeká - jak se přihlásím?</b>
+V místnosti je aktuálně 6 nadupaných kompů a PS5 s dvěma ovladači. 
+Přihlášení do PC:
+• studenti VŠTE: UČO + sekundární heslo
+• ostatní: jméno = student, heslo = student
+
+<b>🟡 Pravidlo 3 – Můžu si hrát co chci?</b>
+Ne, nemůžeš. Počítače jsou připojené na školní síť = hrozí viry.
+Hry si stáhneš:
+• požádáš @Stanislav Veselý
+• nebo si je připravíš doma na svůj disk a připojíš ho
+
+<b>🟡 Pravidlo 4 – A co WiFi?</b>
+Ano, máme dvě sítě:
+• Mightyeagles (2.4 GHz) – větší dosah
+• Mightyeagles (5 GHz) – rychlejší
+Heslo pro obě: Mightyeagles0410
+
+<b>🟡 Pravidlo 5 – Let me in, aneb jak se dostanu do BK1?</b>
+Na recepci:
+• požádáš o klíč
+• zapíšeš se do sešitu
+Jsi zodpovědný za vše, co se děje v místnosti.
+Pokud odcházíš a někdo zůstává, přepište se v sešitu a vyměňte si klíče.
+
+<b>🟡 Pravidlo 6 – Privilegia a jak dlouho mohu hrát?</b>
+Přednost mají:
+• Předsednictvo
+• ÚZO
+• Týmy A (kvůli tréninkům/reprezentaci)
+
+Hrát můžeš, jak dlouho chceš, ALE:
+• Po 20:00 ohlásit recepci (kvůli alarmu)
+• Po 20:00 se ven dostaneš tlačítkem, dovnitř pouze s někým nebo přes SKC
+
+<b>🛑 Pro urgentní případy:</b>
+📞 +420 723 650 097  
+📧 26631@mail.vstecb.cz / stenlyvesely@email.cz
+  </pre>
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="closeRules()">Zavřít</button>
+      </div>
+    </div>
+
 
     <script>
       let reservations = {};
       let ADMIN_ROLE_ID = null;
       let selectedPC = null;
       let currentUser = null;
+      const API_BASE = 'https://reservationsystem-pxrs.onrender.com';
+
 
       let currentDayIndex = 0;
       const pcs = ["1", "2", "3", "4", "5", "PS5", "Stanley"];
@@ -236,7 +296,7 @@
 
         const { pc, from, date } = selectedReservation;
 
-        fetch('https://reservationsystem-pxrs.onrender.com/update-reservation', {
+        fetch(`${API_BASE}/update-reservation`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -246,38 +306,29 @@
             date,
             originalFrom: from
           })
-        }).then(async (res) => {
-          const data = await res.json();
-          if (res.ok) {
-            showMessage("Rezervace byla smazána");
-            await loadReservations(); // ⬅️ Refresh the view
-            closeModal();
-          } else {
-            showMessage(data.error || "Nepodařilo se smazat rezervaci", true);
-          }
-        }).catch(() => {
-          showMessage("Chyba serveru při mazání", true);
-        });
-      }
-
-
-
-      async function loadReservations() {
-        const res = await fetch('https://reservationsystem-pxrs.onrender.com/reservations', { credentials: 'include' });
-        reservations = await res.json();
-        updateCalendar();
-        updateMap();
+        })
+          .then(async (res) => {
+            const data = await res.json();
+            if (res.ok) {
+              showMessage("Rezervace byla smazána");
+              await loadReservations();
+              closeModal();
+            } else {
+              showMessage(data.error || "Nepodařilo se smazat rezervaci", true);
+            }
+          }).catch(() => {
+            showMessage("Chyba serveru při mazání", true);
+          });
       }
 
       function isBrightColor(hex) {
-        const c = hex.substring(1); // remove #
-        const rgb = parseInt(c, 16); // convert to integer
+        const c = hex.substring(1);
+        const rgb = parseInt(c, 16);
         const r = (rgb >> 16) & 0xff;
         const g = (rgb >> 8) & 0xff;
         const b = (rgb >> 0) & 0xff;
-        // Use luminance formula
         const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-        return brightness > 186; // threshold for brightness
+        return brightness > 186;
       }
 
       function showMessage(text, isError = false) {
@@ -306,12 +357,12 @@
       }
 
 
-      async function saveReservations(pc, from, to, date, color = '#1a73e8') {
-        const res = await fetch('https://reservationsystem-pxrs.onrender.com/reserve', {
+      async function saveReservations(pc, from, to, date, color = '#1a73e8', description = '') {
+        const res = await fetch(`${API_BASE}/reserve`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pc, from, to, date, color })
+          body: JSON.stringify({ pc, from, to, date, color, description })
         });
 
         const data = await res.json();
@@ -324,11 +375,12 @@
       }
 
 
+
       function loginWithDiscord() {
-        window.location.href = 'https://reservationsystem-pxrs.onrender.com/login';
+        window.location.href = `${API_BASE}/login`;
       }
       function logout() {
-        fetch('https://reservationsystem-pxrs.onrender.com/logout', {
+        fetch(`${API_BASE}/logout`, {
           method: 'POST',
           credentials: 'include'
         }).then(() => {
@@ -350,11 +402,10 @@
 
       }
       function isInReceptionInterval(fromMins, toMins) {
-        const intervalStart = 20 * 60; // 20:00 → 1200
-        const intervalEnd = 5 * 60;    // 05:00 → 300
+        const intervalStart = 20 * 60;
+        const intervalEnd = 5 * 60;
 
         if (fromMins > toMins) {
-          // crosses midnight
           return (fromMins < 1440 && fromMins >= intervalStart) || (toMins >= 0 && toMins <= intervalEnd);
         } else {
           return (fromMins < intervalEnd || toMins <= intervalEnd) || (fromMins >= intervalStart || toMins > intervalStart);
@@ -365,6 +416,8 @@
         const from = document.getElementById('startTime').value;
         const to = document.getElementById('endTime').value;
         const color = document.getElementById('colorPicker').value || '#1a73e8';
+        const description = document.getElementById('descriptionInput').value || '';
+        const isEditing = selectedReservation !== null;
 
         if (!from || !to) {
           alert("Zadej platné časy");
@@ -374,8 +427,8 @@
         const fromMins = timeToMinutes(from);
         const toMins = timeToMinutes(to);
 
-        if (fromMins === toMins) {
-          alert("Čas rezervace musí být větší než 0 minut.");
+        if (fromMins >= toMins) {
+          alert("Čas 'Od' musí být před časem 'Do'.");
           return;
         }
 
@@ -383,16 +436,44 @@
           alert("Prosím, ohlaste svou prezenci na recepci");
         }
 
-        const pcList = selectedPC === "all" ? pcsToReserveAll : [selectedPC];
+        const date = getCurrentDateStr(currentDayIndex);
 
-        for (const pc of pcList) {
-          const ok = await saveReservations(pc, from, to, getCurrentDateStr(currentDayIndex), color);
-          if (!ok) return;
+        if (isEditing) {
+          const res = await fetch(`${API_BASE}/update-reservation`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              pc: selectedReservation.pc,
+              from,
+              to,
+              date,
+              originalFrom: selectedReservation.from,
+              description,
+              color
+            })
+
+          });
+
+          const data = await res.json();
+          if (!res.ok) {
+            showMessage(data.error || 'Nepodařilo se upravit rezervaci', true);
+            return;
+          }
+          showMessage("Rezervace upravena");
+        } else {
+          const pcList = selectedPC === "all" ? pcsToReserveAll : [selectedPC];
+
+          for (const pc of pcList) {
+            const ok = await saveReservations(pc, from, to, date, color, description);
+            if (!ok) return;
+          }
         }
 
         closeModal();
         await loadReservations();
       }
+
 
 
 
@@ -408,7 +489,7 @@
 
       async function loadReservations() {
         try {
-          const res = await fetch('https://reservationsystem-pxrs.onrender.com/reservations', {
+          const res = await fetch(`${API_BASE}/reservations`, {
             credentials: 'include'
           });
           if (!res.ok) throw new Error("Failed to load reservations");
@@ -423,7 +504,7 @@
 
       async function fetchUser() {
         try {
-          const res = await fetch('https://reservationsystem-pxrs.onrender.com/me', {
+          const res = await fetch(`${API_BASE}/me`, {
             credentials: 'include'
           });
           if (!res.ok) throw new Error("Not logged in");
@@ -464,16 +545,39 @@
             cell.dataset.hour = hour;
 
             cell.onclick = () => {
+              if (pc === "Stanley") {
+                showMessage("Pro rezervaci kontaktujte Standu na Discordu (@stenlyvesely)", true);
+                return;
+              }
+
+              const slotStart = `${String(hour).padStart(2, '0')}:00`;
+              const slotEnd = `${String(hour).padStart(2, '0')}:30`;
+              const today = getCurrentDateStr(currentDayIndex);
+
+              const overlaps = (reservations[pc] || []).filter(r =>
+                r.date === today && timeOverlap(r.from, r.to, slotStart, slotEnd)
+              );
+
+              const isAdminUser = currentUser && currentUser.roles?.includes(ADMIN_ROLE_ID);
+              const isOwner = overlaps.length === 0 || overlaps.every(r => r.user === currentUser?.username);
+
+              if (!isAdminUser && !isOwner) {
+                showMessage("Tuto dobu nemůžeš rezervovat", true);
+                return;
+              }
+
               selectedPC = pc;
-              const h = String(hour).padStart(2, '0');
-              document.getElementById('startTime').value = `${h}:00`;
-              document.getElementById('endTime').value = `${h}:30`;
+              document.getElementById('startTime').value = slotStart;
+              document.getElementById('endTime').value = slotEnd;
               document.getElementById('modalPC').innerText = `Rezervace PC ${selectedPC}`;
               selectedReservation = null;
               document.getElementById('deleteBtn').style.display = 'none';
+              document.querySelector('#reservationModal button[onclick="makeReservation()"]').innerText = 'Rezervovat';
               document.getElementById('overlay').style.display = 'block';
               document.getElementById('reservationModal').style.display = 'block';
             };
+
+
 
             row.appendChild(cell);
           });
@@ -487,7 +591,7 @@
             if (
               e.date !== getCurrentDateStr(currentDayIndex) ||
               !e.from || !e.to
-            ) return; // Skip deleted or invalid reservations
+            ) return;
 
 
 
@@ -501,35 +605,39 @@
 
             const div = document.createElement('div');
             div.className = 'reservation-entry';
-            div.innerText = `${e.user}\n${e.from}–${e.to}`;
+            div.innerText = `${e.user}\n${e.from}–${e.to}${e.description ? `\n${e.description}` : ''}`;
             div.style.top = `${(startMin / 60) * slotHeight}px`;
             div.style.height = `${duration * slotHeight}px`;
             div.style.backgroundColor = e.color || '#1a73e8';
             div.style.color = isBrightColor(e.color || '#1a73e8') ? 'black' : 'white';
 
-            div.onclick = (e2) => {
-              e2.stopPropagation();
-              selectedReservation = {
-                pc,
-                from: e.from,
-                date: e.date,
-                user: e.user,
-                color: e.color || '#1a73e8'
+            const isOwner = currentUser && (e.user === currentUser.username);
+            const isAdminUser = currentUser && currentUser.roles?.includes(ADMIN_ROLE_ID);
+
+            if (isOwner || isAdminUser) {
+              div.onclick = (e2) => {
+                e2.stopPropagation();
+                selectedReservation = {
+                  pc,
+                  from: e.from,
+                  date: e.date,
+                  user: e.user,
+                  color: e.color || '#1a73e8'
+                };
+                document.querySelector('#reservationModal button[onclick="makeReservation()"]').innerText = 'Upravit';
+                document.getElementById('startTime').value = e.from;
+                document.getElementById('endTime').value = e.to;
+                document.getElementById('colorPicker').value = e.color || '#1a73e8';
+                document.getElementById('modalPC').innerText = `Upravit rezervaci PC ${pc}`;
+                document.getElementById('descriptionInput').value = e.description || '';
+
+                const canDelete = isOwner || isAdminUser;
+                document.getElementById('deleteBtn').style.display = canDelete ? 'inline-block' : 'none';
+
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('reservationModal').style.display = 'block';
               };
-              document.getElementById('startTime').value = e.from;
-              document.getElementById('endTime').value = e.to;
-              document.getElementById('colorPicker').value = e.color || '#1a73e8';
-              document.getElementById('modalPC').innerText = `Upravit rezervaci PC ${pc}`;
-
-              const canDelete = currentUser && (e.user === currentUser.username || currentUser.roles?.includes(ADMIN_ROLE_ID));
-              document.getElementById('deleteBtn').style.display = canDelete ? 'inline-block' : 'none';
-
-              document.getElementById('overlay').style.display = 'block';
-              document.getElementById('reservationModal').style.display = 'block';
-            };
-
-
-            cell.appendChild(div);
+            }
             cell.appendChild(div);
           });
         });
@@ -540,7 +648,7 @@
       function getCurrentDateStr(offset = 0) {
         const date = new Date();
         date.setDate(date.getDate() + offset);
-        return date.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+        return date.toISOString().split('T')[0];
       }
 
 
@@ -582,8 +690,15 @@
         setInterval(updateNowLine, 60000);
         document.querySelectorAll('.pc-box').forEach(el => {
           el.addEventListener('click', () => {
-            selectedPC = el.dataset.id;
+            const pcId = el.dataset.id;
+            if (pcId === "Stanley") {
+              showMessage("Pro rezervaci kontaktujte Standu na Discordu (@stenlyvesely)", true);
+              return;
+            }
+
+            selectedPC = pcId;
             selectedReservation = null;
+            document.querySelector('#reservationModal button[onclick="makeReservation()"]').innerText = 'Rezervovat';
             document.getElementById('modalPC').innerText = `Rezervace PC ${selectedPC}`;
             document.getElementById('colorPicker').value = "#1a73e8";
             document.getElementById('deleteBtn').style.display = 'none';
@@ -592,7 +707,20 @@
           });
         });
 
+
       });
+
+
+      function showRules() {
+        document.getElementById('rulesModal').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+      }
+
+      function closeRules() {
+        document.getElementById('rulesModal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+      }
+
 
       updateNowLine();
     </script>
