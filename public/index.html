@@ -2,146 +2,10 @@
 <html lang="cs">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rezervace PC</title>
-  <style>
-    .hidden {
-      display: none !important;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      margin: 0;
-      padding: 0;
-    }
-
-    .top-bar {
-      padding: 10px;
-      background: white;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    #calendarView,
-    #mapView {
-      padding: 20px;
-      position: relative;
-    }
-
-    #calendarTable {
-      width: 100%;
-      border-spacing: 0;
-      table-layout: fixed;
-      position: relative;
-    }
-
-    #calendarTable th {
-      height: 40px;
-      background: #fafafa;
-      border-bottom: 1px solid #ccc;
-      font-weight: normal;
-    }
-
-    #calendarTable td {
-      border-left: 1px solid #eee;
-      border-top: 1px solid #eee;
-      position: relative;
-      height: 60px;
-      vertical-align: top;
-      padding: 0;
-      cursor: pointer;
-    }
-
-    #calendarTable td:first-child,
-    #calendarTable th:first-child {
-      width: 60px;
-      text-align: right;
-      font-size: 12px;
-      color: #888;
-      padding-right: 5px;
-      border: none;
-      background: #fff;
-    }
-
-    .reservation-entry {
-      position: absolute;
-      left: 4px;
-      right: 4px;
-      background-color: #1a73e8;
-      font-size: 0.8em;
-      color: white;
-      padding: 4px;
-      border-radius: 4px;
-      z-index: 2;
-      white-space: pre-line;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
-
-    .now-line {
-      position: absolute;
-      height: 2px;
-      background: red;
-      left: 60px;
-      right: 0;
-      z-index: 10;
-      pointer-events: none;
-    }
-
-    .pc-box {
-      position: absolute;
-      border: 2px solid green;
-      text-align: center;
-      font-weight: bold;
-      color: green;
-      background-color: white;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .pc-box.red {
-      background-color: lightcoral !important;
-    }
-
-    #overlay,
-    #reservationModal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-    }
-
-    #overlay {
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-    }
-
-    #reservationModal {
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border: 1px solid black;
-      padding: 20px;
-    }
-
-    .room {
-      position: relative;
-      width: 1000px;
-      height: 500px;
-      border: 2px solid black;
-      margin: auto;
-      background-color: white;
-    }
-  </style>
+<link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
@@ -152,9 +16,7 @@
     </div>
   </div>
 
-  <div id="message" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
-                         background: #333; color: white; padding: 10px 20px; border-radius: 5px;
-                         display: none; z-index: 2000;"></div>
+  <div id="message" class="message-box"></div>
 
   <div id="app" class="hidden">
     <div class="top-bar">
@@ -172,18 +34,13 @@
     <div id="mapView">
       <h2 style="text-align:center">Místnost</h2>
       <div class="room">
-        <div class="pc-box" style="top: 20px; left: 20px; width: 230px; height: 100px;" data-id="4">PC
-          4<br><small>ADC</small></div>
-        <div class="pc-box" style="top: 20px; left: 260px; width: 230px; height: 100px;" data-id="5">PC
-          5<br><small>SUPPORT</small></div>
-        <div class="pc-box" style="top: 360px; left: 20px; width: 180px; height: 80px;" data-id="3">PC
-          3<br><small>MID</small></div>
-        <div class="pc-box" style="top: 360px; left: 210px; width: 180px; height: 80px;" data-id="2">PC
-          2<br><small>JG</small></div>
-        <div class="pc-box" style="top: 360px; left: 400px; width: 180px; height: 80px;" data-id="1">PC
-          1<br><small>TOP/Simča</small></div>
-        <div class="pc-box" style="top: 20px; left: 700px; width: 150px; height: 80px; background: red; color: white;"
-          data-id="Stanley">Stanley PC</div>
+        <div class="pc-box" style="top: 20px; left: 20px; width: 230px; height: 100px;" data-id="4">PC 4<br><small>ADC</small></div>
+        <div class="pc-box" style="top: 20px; left: 260px; width: 230px; height: 100px;" data-id="5">PC 5<br><small>SUPPORT</small></div>
+        <div class="pc-box" style="top: 360px; left: 20px; width: 180px; height: 80px;" data-id="3">PC 3<br><small>MID</small></div>
+        <div class="pc-box" style="top: 360px; left: 210px; width: 180px; height: 80px;" data-id="2">PC 2<br><small>JG</small></div>
+        <div class="pc-box" style="top: 360px; left: 400px; width: 180px; height: 80px;" data-id="1">PC 1<br><small>TOP/Simča</small></div>
+        <div class="pc-box" style="top: 360px; left: 590px; width: 100px; height: 80px;" data-id="Stul">Stůl<br><small>bez PC</small></div>
+        <div class="pc-box" style="top: 20px; left: 700px; width: 150px; height: 80px; background: red; color: white;" data-id="Stanley">Stanley PC</div>
         <div class="pc-box" style="top: 160px; left: 860px; width: 100px; height: 220px;" data-id="PS5">PS5</div>
       </div>
     </div>
@@ -201,6 +58,7 @@
               <th>PC 3</th>
               <th>PC 4</th>
               <th>PC 5</th>
+              <th>Stůl</th>
               <th>PS5</th>
               <th>Stanley</th>
             </tr>
@@ -223,9 +81,7 @@
       <button onclick="closeModal()">Zrušit</button>
     </div>
 
-    <div id="rulesModal" style="display: none; position: fixed; z-index: 1000; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                             background: white; border: 1px solid black; padding: 20px; max-width: 800px; max-height: 90vh;
-                             overflow-y: auto;">
+    <div id="rulesModal" style="display: none; position: fixed; z-index: 1000; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 1px solid black; padding: 20px; max-width: 800px; max-height: 90vh; overflow-y: auto;">
       <h2>Pravidla a informace o místnosti BK1</h2>
       <pre style="white-space: pre-wrap;">
 <b>🟡 Pravidlo 1 – Kdo může navštěvovat místnost?</b>
@@ -267,464 +123,23 @@ Přednost mají:
 
 Hrát můžeš, jak dlouho chceš, ALE:
 • Po 20:00 ohlásit recepci (kvůli alarmu)
-• Po 20:00 se ven dostaneš tlačítkem, dovnitř pouze s někým nebo přes SKC
-
-<b>🛑 Pro urgentní případy:</b>
-📞 +420 723 650 097  
-📧 26631@mail.vstecb.cz / stenlyvesely@email.cz
-  </pre>
+• Po 20:00 se ven dostaneš tlačít... (zkráceno pro přehlednost)
+      </pre>
       <div style="text-align: center; margin-top: 20px;">
         <button onclick="closeRules()">Zavřít</button>
       </div>
     </div>
-
-
-    <script>
-      let reservations = {};
-      let ADMIN_ROLE_ID = null;
-      let selectedPC = null;
-      let currentUser = null;
-      const API_BASE = 'https://reservationsystem-pxrs.onrender.com';
-
-
-      let currentDayIndex = 0;
-      const pcs = ["1", "2", "3", "4", "5", "PS5", "Stanley"];
-      const pcsToReserveAll = ["1", "2", "3", "4", "5"];
-
-      function deleteReservation() {
-        if (!selectedReservation) return;
-
-        const { pc, from, date } = selectedReservation;
-
-        fetch(`${API_BASE}/update-reservation`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            pc,
-            from: '', to: '',
-            date,
-            originalFrom: from
-          })
-        })
-          .then(async (res) => {
-            const data = await res.json();
-            if (res.ok) {
-              showMessage("Rezervace byla smazána");
-              await loadReservations();
-              closeModal();
-            } else {
-              showMessage(data.error || "Nepodařilo se smazat rezervaci", true);
-            }
-          }).catch(() => {
-            showMessage("Chyba serveru při mazání", true);
-          });
-      }
-
-      function isBrightColor(hex) {
-        const c = hex.substring(1);
-        const rgb = parseInt(c, 16);
-        const r = (rgb >> 16) & 0xff;
-        const g = (rgb >> 8) & 0xff;
-        const b = (rgb >> 0) & 0xff;
-        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-        return brightness > 186;
-      }
-
-      function showMessage(text, isError = false) {
-        const el = document.getElementById('message');
-        el.textContent = text;
-        el.style.background = isError ? 'crimson' : '#333';
-        el.style.display = 'block';
-        setTimeout(() => {
-          el.style.display = 'none';
-        }, 3000);
-      }
-
-
-
-      function timeToMinutes(t) {
-        const [h, m] = t.split(":").map(Number);
-        return h * 60 + m;
-      }
-
-      function timeOverlap(start1, end1, start2, end2) {
-        const s1 = timeToMinutes(start1);
-        const e1 = timeToMinutes(end1);
-        const s2 = timeToMinutes(start2);
-        const e2 = timeToMinutes(end2);
-        return s1 < e2 && s2 < e1;
-      }
-
-
-      async function saveReservations(pc, from, to, date, color = '#1a73e8', description = '') {
-        const res = await fetch(`${API_BASE}/reserve`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pc, from, to, date, color, description })
-        });
-
-        const data = await res.json();
-        if (!res.ok) {
-          alert(data.error || 'Nepodařilo se uložit rezervaci');
-          return false;
-        }
-
-        return true;
-      }
-
-
-
-      function loginWithDiscord() {
-        window.location.href = `${API_BASE}/login`;
-      }
-      function logout() {
-        fetch(`${API_BASE}/logout`, {
-          method: 'POST',
-          credentials: 'include'
-        }).then(() => {
-          window.location.reload();
-        });
-      }
-
-      function closeModal() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('reservationModal').style.display = 'none';
-      }
-      function reserveAllFive() {
-        selectedPC = "all";
-        selectedReservation = null;
-        document.getElementById('modalPC').innerText = `Rezervace všech 5 PC`;
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('reservationModal').style.display = 'block';
-        document.getElementById('deleteBtn').style.display = selectedReservation ? 'inline-block' : 'none';
-
-      }
-      function isInReceptionInterval(fromMins, toMins) {
-        const intervalStart = 20 * 60;
-        const intervalEnd = 5 * 60;
-
-        if (fromMins > toMins) {
-          return (fromMins < 1440 && fromMins >= intervalStart) || (toMins >= 0 && toMins <= intervalEnd);
-        } else {
-          return (fromMins < intervalEnd || toMins <= intervalEnd) || (fromMins >= intervalStart || toMins > intervalStart);
-        }
-      }
-
-      async function makeReservation() {
-        const from = document.getElementById('startTime').value;
-        const to = document.getElementById('endTime').value;
-        const color = document.getElementById('colorPicker').value || '#1a73e8';
-        const description = document.getElementById('descriptionInput').value || '';
-        const isEditing = selectedReservation !== null;
-
-        if (!from || !to) {
-          alert("Zadej platné časy");
-          return;
-        }
-
-        const fromMins = timeToMinutes(from);
-        const toMins = timeToMinutes(to);
-
-        if (fromMins >= toMins) {
-          alert("Čas 'Od' musí být před časem 'Do'.");
-          return;
-        }
-
-        if (isInReceptionInterval(fromMins, toMins)) {
-          alert("Prosím, ohlaste svou prezenci na recepci");
-        }
-
-        const date = getCurrentDateStr(currentDayIndex);
-
-        if (isEditing) {
-          const res = await fetch(`${API_BASE}/update-reservation`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              pc: selectedReservation.pc,
-              from,
-              to,
-              date,
-              originalFrom: selectedReservation.from,
-              description,
-              color
-            })
-
-          });
-
-          const data = await res.json();
-          if (!res.ok) {
-            showMessage(data.error || 'Nepodařilo se upravit rezervaci', true);
-            return;
-          }
-          showMessage("Rezervace upravena");
-        } else {
-          const pcList = selectedPC === "all" ? pcsToReserveAll : [selectedPC];
-
-          for (const pc of pcList) {
-            const ok = await saveReservations(pc, from, to, date, color, description);
-            if (!ok) return;
-          }
-        }
-
-        closeModal();
-        await loadReservations();
-      }
-
-
-
-
-
-
-      function updateDateDisplay() {
-        const date = new Date(getCurrentDateStr(currentDayIndex));
-        document.getElementById('dateDisplay').innerText = date.toLocaleDateString('cs-CZ', {
-          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-        });
-      }
-
-
-      async function loadReservations() {
-        try {
-          const res = await fetch(`${API_BASE}/reservations`, {
-            credentials: 'include'
-          });
-          if (!res.ok) throw new Error("Failed to load reservations");
-          reservations = await res.json();
-          updateCalendar();
-          updateMap();
-        } catch (err) {
-          console.error("Nepodařilo se načíst rezervace:", err);
-        }
-      }
-
-
-      async function fetchUser() {
-        try {
-          const res = await fetch(`${API_BASE}/me`, {
-            credentials: 'include'
-          });
-          if (!res.ok) throw new Error("Not logged in");
-
-          const user = await res.json();
-          currentUser = user;
-          ADMIN_ROLE_ID = user.adminRoleId;
-
-          document.getElementById('userInfo').innerText = `Přihlášen: ${user.username}`;
-          document.getElementById('loginScreen').style.display = 'none';
-          document.getElementById('app').classList.remove('hidden');
-          document.getElementById('loginBtn').style.display = 'none';
-          document.getElementById('logoutBtn').style.display = 'inline-block';
-        } catch (e) {
-          document.getElementById('loginScreen').style.display = 'flex';
-          document.getElementById('app').classList.add('hidden');
-          document.getElementById('userInfo').innerText = `Nepřihlášen`;
-          document.getElementById('loginBtn').style.display = 'inline-block';
-          document.getElementById('logoutBtn').style.display = 'none';
-        }
-      }
-
-
-      function updateCalendar() {
-        const body = document.getElementById('calendarBody');
-        body.innerHTML = '';
-        const slotHeight = 60;
-
-        for (let hour = 0; hour < 24; hour++) {
-          const row = document.createElement('tr');
-          const timeCell = document.createElement('td');
-          timeCell.textContent = `${hour}:00`;
-          row.appendChild(timeCell);
-
-          pcs.forEach(pc => {
-            const cell = document.createElement('td');
-            cell.dataset.pc = pc;
-            cell.dataset.hour = hour;
-
-            cell.onclick = () => {
-              if (pc === "Stanley") {
-                showMessage("Pro rezervaci kontaktujte Standu na Discordu (@stenlyvesely)", true);
-                return;
-              }
-
-              const slotStart = `${String(hour).padStart(2, '0')}:00`;
-              const slotEnd = `${String(hour).padStart(2, '0')}:30`;
-              const today = getCurrentDateStr(currentDayIndex);
-
-              const overlaps = (reservations[pc] || []).filter(r =>
-                r.date === today && timeOverlap(r.from, r.to, slotStart, slotEnd)
-              );
-
-              const isAdminUser = currentUser && currentUser.roles?.includes(ADMIN_ROLE_ID);
-              const isOwner = overlaps.length === 0 || overlaps.every(r => r.user === currentUser?.username);
-
-              if (!isAdminUser && !isOwner) {
-                showMessage("Tuto dobu nemůžeš rezervovat", true);
-                return;
-              }
-
-              selectedPC = pc;
-              document.getElementById('startTime').value = slotStart;
-              document.getElementById('endTime').value = slotEnd;
-              document.getElementById('modalPC').innerText = `Rezervace PC ${selectedPC}`;
-              selectedReservation = null;
-              document.getElementById('deleteBtn').style.display = 'none';
-              document.querySelector('#reservationModal button[onclick="makeReservation()"]').innerText = 'Rezervovat';
-              document.getElementById('overlay').style.display = 'block';
-              document.getElementById('reservationModal').style.display = 'block';
-            };
-
-
-
-            row.appendChild(cell);
-          });
-
-          body.appendChild(row);
-        }
-
-        pcs.forEach((pc, pcIndex) => {
-          const entries = reservations[pc] || [];
-          entries.forEach(e => {
-            if (
-              e.date !== getCurrentDateStr(currentDayIndex) ||
-              !e.from || !e.to
-            ) return;
-
-
-
-            const [startHour, startMin] = e.from.split(":").map(Number);
-            const [endHour, endMin] = e.to.split(":").map(Number);
-            const duration = (endHour + endMin / 60) - (startHour + startMin / 60);
-
-            const row = body.querySelector(`tr:nth-child(${startHour + 1})`);
-            const cell = row?.querySelector(`td:nth-child(${pcIndex + 2})`);
-            if (!cell) return;
-
-            const div = document.createElement('div');
-            div.className = 'reservation-entry';
-            div.innerText = `${e.user}\n${e.from}–${e.to}${e.description ? `\n${e.description}` : ''}`;
-            div.style.top = `${(startMin / 60) * slotHeight}px`;
-            div.style.height = `${duration * slotHeight}px`;
-            div.style.backgroundColor = e.color || '#1a73e8';
-            div.style.color = isBrightColor(e.color || '#1a73e8') ? 'black' : 'white';
-
-            const isOwner = currentUser && (e.user === currentUser.username);
-            const isAdminUser = currentUser && currentUser.roles?.includes(ADMIN_ROLE_ID);
-
-            if (isOwner || isAdminUser) {
-              div.onclick = (e2) => {
-                e2.stopPropagation();
-                selectedReservation = {
-                  pc,
-                  from: e.from,
-                  date: e.date,
-                  user: e.user,
-                  color: e.color || '#1a73e8'
-                };
-                document.querySelector('#reservationModal button[onclick="makeReservation()"]').innerText = 'Upravit';
-                document.getElementById('startTime').value = e.from;
-                document.getElementById('endTime').value = e.to;
-                document.getElementById('colorPicker').value = e.color || '#1a73e8';
-                document.getElementById('modalPC').innerText = `Upravit rezervaci PC ${pc}`;
-                document.getElementById('descriptionInput').value = e.description || '';
-
-                const canDelete = isOwner || isAdminUser;
-                document.getElementById('deleteBtn').style.display = canDelete ? 'inline-block' : 'none';
-
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('reservationModal').style.display = 'block';
-              };
-            }
-            cell.appendChild(div);
-          });
-        });
-
-        updateNowLine();
-      }
-
-      function getCurrentDateStr(offset = 0) {
-        const date = new Date();
-        date.setDate(date.getDate() + offset);
-        return date.toISOString().split('T')[0];
-      }
-
-
-      function updateNowLine() {
-        const line = document.getElementById('nowLine');
-        const now = new Date();
-        const isToday = currentDayIndex === 0;
-        if (!isToday) return line.style.display = 'none';
-
-        const offset = ((now.getHours() + 1) + now.getMinutes() / 60) * 60;
-        line.style.top = `${offset}px`;
-        line.style.display = 'block';
-      }
-      function updateMap() {
-        const now = new Date();
-        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        document.querySelectorAll('.pc-box').forEach(el => {
-          const id = el.dataset.id;
-          const inUse = (reservations[id] || []).some(r => r.date === getCurrentDateStr(currentDayIndex) && r.from <= timeStr && r.to > timeStr);
-          el.classList.toggle('red', inUse);
-        });
-      }
-      function toggleView() {
-        const map = document.getElementById('mapView');
-        const cal = document.getElementById('calendarView');
-        map.style.display = map.style.display === 'none' ? 'block' : 'none';
-        cal.style.display = cal.style.display === 'none' ? 'block' : 'none';
-        updateCalendar();
-        updateMap();
-      }
-      function prevDay() { currentDayIndex--; updateCalendar(); updateMap(); updateDateDisplay(); }
-      function nextDay() { currentDayIndex++; updateCalendar(); updateMap(); updateDateDisplay(); }
-      window.addEventListener('load', () => {
-        fetchUser();
-        loadReservations();
-        updateDateDisplay();
-        updateCalendar();
-        updateMap();
-        setInterval(updateNowLine, 60000);
-        document.querySelectorAll('.pc-box').forEach(el => {
-          el.addEventListener('click', () => {
-            const pcId = el.dataset.id;
-            if (pcId === "Stanley") {
-              showMessage("Pro rezervaci kontaktujte Standu na Discordu (@stenlyvesely)", true);
-              return;
-            }
-
-            selectedPC = pcId;
-            selectedReservation = null;
-            document.querySelector('#reservationModal button[onclick="makeReservation()"]').innerText = 'Rezervovat';
-            document.getElementById('modalPC').innerText = `Rezervace PC ${selectedPC}`;
-            document.getElementById('colorPicker').value = "#1a73e8";
-            document.getElementById('deleteBtn').style.display = 'none';
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('reservationModal').style.display = 'block';
-          });
-        });
-
-
-      });
-
-
-      function showRules() {
-        document.getElementById('rulesModal').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-      }
-
-      function closeRules() {
-        document.getElementById('rulesModal').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-      }
-
-
-      updateNowLine();
-    </script>
   </div>
+
+  <!-- JavaScript includes -->
+  <script src="js/globals.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dom.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/events.js"></script>
 </body>
 
 </html>

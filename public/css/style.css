@@ -1,0 +1,150 @@
+/* css/style.css */
+
+.hidden {
+  display: none !important;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.top-bar {
+  padding: 10px;
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#calendarView,
+#mapView {
+  padding: 20px;
+  position: relative;
+}
+
+#calendarTable {
+  width: 100%;
+  border-spacing: 0;
+  table-layout: fixed;
+  position: relative;
+}
+
+#calendarTable th {
+  height: 40px;
+  background: #fafafa;
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+}
+
+#calendarTable td {
+  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
+  position: relative;
+  height: 60px;
+  vertical-align: top;
+  padding: 0;
+  cursor: pointer;
+}
+
+#calendarTable td:first-child,
+#calendarTable th:first-child {
+  width: 60px;
+  text-align: right;
+  font-size: 12px;
+  color: #888;
+  padding-right: 5px;
+  border: none;
+  background: #fff;
+}
+
+.reservation-entry {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  background-color: #1a73e8;
+  font-size: 0.8em;
+  color: white;
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 2;
+  white-space: pre-line;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.now-line {
+  position: absolute;
+  height: 2px;
+  background: red;
+  left: 60px;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.pc-box {
+  position: absolute;
+  border: 2px solid green;
+  text-align: center;
+  font-weight: bold;
+  color: green;
+  background-color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pc-box.red {
+  background-color: lightcoral !important;
+}
+
+#overlay,
+#reservationModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+}
+
+#overlay {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#reservationModal {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.room {
+  position: relative;
+  width: 1000px;
+  height: 500px;
+  border: 2px solid black;
+  margin: auto;
+  background-color: white;
+}
+
+.message-box {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: none;
+  z-index: 2000;
+}
