@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000';
+const API_BASE = 'https://reservationsystem-pxrs.onrender.com';
 
 async function saveReservations(pc, from, to, date, color = '#1a73e8', description = '') {
   const res = await fetch(`${API_BASE}/reserve`, {
