@@ -13,7 +13,7 @@ const client = new Client({
   ]
 });
 
-const CHANNEL_ID = process.env.CHANNEL_ID;
+const CHANNEL_ID = process.env.CHANNEL_ID_LOL;
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const ADMINS = ['344531980567838722'];

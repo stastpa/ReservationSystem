@@ -13,9 +13,9 @@ const client = new Client({
   ]
 });
 
-const CHANNEL_ID = process.env.CHANNEL_ID;
+const CHANNEL_ID = process.env.CHANNEL_ID_VALO;
 const HENRIK_API_KEY = process.env.HENRIK_API_KEY;
-const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+const DISCORD_TOKEN = process.env.CLIENT_ID;
 const ADMINS = ['344531980567838722'];
 
 const players = require('./players.json');
