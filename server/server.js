@@ -6,9 +6,6 @@ const cors = require('cors');
 const path = require('path');
 
 const supabase = require('./supabase');
-require('../bot/lol/LoLactivity');
-require('../bot/Valo/Valoactivity');
-
 
 const app = express();
 const PORT = process.env.PORT || 3000;
