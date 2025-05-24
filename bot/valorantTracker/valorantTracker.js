@@ -97,7 +97,6 @@ module.exports = {
 
     // 🔁 Schedule next updates every 1m10s
     setInterval(async () => {
-      console.log(`⏳ Valorant interval tick`);
       if (updateInProgress) return;
       updateInProgress = true;
       try {
